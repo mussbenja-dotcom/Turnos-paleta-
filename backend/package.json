@@ -1,0 +1,22 @@
+{
+  "name": "padel-turnos-backend",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de turnos con bot de WhatsApp",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "db:init": "node src/db/init.js",
+    "db:init:seed": "node src/db/init.js --seed"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "pg": "^8.12.0"
+  }
+}

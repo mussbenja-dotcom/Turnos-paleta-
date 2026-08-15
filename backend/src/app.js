@@ -12,6 +12,7 @@ app.use('/api/clubes', require('./routes/clubes'));
 app.use('/api/canchas', require('./routes/canchas'));
 app.use('/api/turnos', require('./routes/turnos'));
 app.use('/whatsapp', require('./routes/whatsapp'));
+app.use('/admin', require('./routes/admin'));
 
 // Política de privacidad
 app.get('/privacy', (_req, res) => {

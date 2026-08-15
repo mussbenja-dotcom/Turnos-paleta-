@@ -7,10 +7,10 @@ const URL = `https://graph.facebook.com/${API_VERSION}/${PHONE_ID}/messages`;
 /**
  * Conversión temporal SOLO para la prueba con Meta.
  *
- * WhatsApp recibe el mensaje entrante como:
+ * El webhook recibe:
  * 5493382461766
  *
- * Pero Meta tiene autorizado como destinatario de prueba:
+ * Pero el destinatario autorizado de prueba figura como:
  * 54338215461766
  */
 function normalizarDestinatario(to) {
@@ -54,12 +54,14 @@ async function enviar(payload) {
 }
 
 /**
- * Formatea una fecha/hora para mostrar solamente la hora.
+ * Formatea la hora en formato 24 h corto.
+ * Ejemplo: 09:00
  */
 function fmtHora(iso) {
   return new Date(iso).toLocaleTimeString('es-AR', {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
     timeZone: 'America/Argentina/Buenos_Aires',
   });
 }
@@ -71,14 +73,11 @@ async function enviarMenuDeportes(to) {
   return enviar({
     to,
     type: 'interactive',
-
     interactive: {
       type: 'button',
-
       body: {
         text: '¡Hola! 🎾 ¿Qué querés reservar hoy?',
       },
-
       action: {
         buttons: [
           {
@@ -110,7 +109,6 @@ async function enviarMenuDeportes(to) {
 
 /**
  * Envía una lista interactiva con los turnos disponibles.
- *
  * WhatsApp permite máximo 10 filas por lista.
  */
 async function enviarListaTurnos(
@@ -121,6 +119,8 @@ async function enviarListaTurnos(
   const rows = turnos.slice(0, 10).map((t) => ({
     id: `turno_${t.id}`,
 
+    // Máximo permitido por WhatsApp: 24 caracteres.
+    // Ejemplo: "09:00 - 10:30"
     title: `${fmtHora(t.inicio)} - ${fmtHora(t.fin)}`,
 
     description: `${t.cancha_nombre || 'Cancha'} · ${
@@ -130,9 +130,7 @@ async function enviarListaTurnos(
 
   return enviar({
     to,
-
     type: 'interactive',
-
     interactive: {
       type: 'list',
 
@@ -169,9 +167,7 @@ async function enviarListaTurnos(
 async function enviarTexto(to, text) {
   return enviar({
     to,
-
     type: 'text',
-
     text: {
       body: text,
     },

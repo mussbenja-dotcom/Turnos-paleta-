@@ -30,6 +30,7 @@ router.post('/webhook', async (req, res) => {
     if (!msg) return; // puede ser un status update (entregado/leído), lo ignoramos
 
     const from = msg.from; // wa_id del cliente
+    console.log('📱 Número recibido desde WhatsApp:', from);
     const nombrePerfil = value?.contacts?.[0]?.profile?.name || null;
 
     // Aseguro que el cliente exista
